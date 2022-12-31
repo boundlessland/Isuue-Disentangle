@@ -329,11 +329,13 @@ def getNonLanguage(s):
     nonLanguageFinal = []
     for n in nonLanguage:  # 由于url会被误认为singlecomment，需要进行排除
         if n[2] == 'singlecomment':
+            valid = True
             for m in nonLanguage:
                 if m[2] == 'url' and m[0] < n[0] < m[1]:
-                    continue
-                else:
-                    nonLanguageFinal.append(n)
+                    valid = False
+                    break
+            if valid:
+                nonLanguageFinal.append(n)
         else:
             nonLanguageFinal.append(n)
     return nonLanguageFinal
