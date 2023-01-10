@@ -447,20 +447,25 @@ def preprocess(issueDf, encoder):
                   'ZOOKEEPER-2529', 'ZOOKEEPER-2577', 'ZOOKEEPER-2610', 'ZOOKEEPER-2679', ]
     textEncoder = TextEncoder('fasttext')
     for index, issue in issueDf.iterrows():
-        print(index)
-        if issue['issue_key'] in defaultLst:
-            issueDf.at[index, 'summary'] = [issue['summary'], [], '', [], []]
-            continue
+        # print(index)
+        # if issue['issue_key'] in defaultLst:
+        #     issueDf.at[index, 'summary'] = [issue['summary'], [], '', [], []]
+        #     continue
         try:
             # textLst = [issue['summary'], issue['description']]
             summary = cleanStr(issue['summary'])
             summary.append(removeStopwords(reduction(tokenize(summary[2], 'sentence'))))
-            summary.append(textEncoder.getSentenceVector(summary[3]))
+            # summary.append(textEncoder.getSentenceVector(summary[3]))
             issueDf.at[index, 'summary'] = summary  # 从字符串转化为了结果列表
-            description = cleanStr(issue['description'])
-            description.append(
-                [removeStopwords(reduction(wL)) for wL in tokenize(description[2], 'paragraph')])
-            issueDf.at[index, 'description'] = description  # 从字符串转化为了结果列表
+            # if issue['issue_key'] in defaultLst:
+            #     issueDf.at[index, 'description'] = [issue['description'], [], '', [], []]
+            # else:
+            #     description = cleanStr(issue['description'])
+            #     description.append(
+            #         [removeStopwords(reduction(wL)) for wL in tokenize(description[2], 'paragraph')])
+            #     vecLst = [textEncoder.getSentenceVector(s) for s in description[3]]
+            #     description.append(vecLst)
+            #     issueDf.at[index, 'description'] = description  # 从字符串转化为了结果列表
         except Exception as e:
             print(e)
             print(issue)
